@@ -1,0 +1,6 @@
+parent(joost,leon)
+parent(joost,sacha)
+parent(peter,joost)
+female(sacha)
+parent(X,Y)>ancestor(X,Y)
+parent(X,Z)&ancestor(Z,Y)>ancestor(X,Y)

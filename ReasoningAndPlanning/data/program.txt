@@ -1,0 +1,9 @@
+#In the think step, your agent evaluates the program rules.
+#It does so by doing inference on the union of the program rules (this file) and the belief base.
+#The program rules define how and when actions need to be added to the intentions, goals need to be addopted and beliefs needs to be added or deleted
+#Actions are defined by the operators +-*~_. See the assignment for an explanantion of these operators.
+#The conditions of a rule are the preconditions, just like any other rule. The conclusion of the rule contains the action(s) and/or facts that can be derived with inference.
+#Actions are not used during inference as new facts (i.e., they cannot unify with the knowledge base), 
+#They are processed by the agent as new facts into the appropriate knowledge bases (beliefs, desires, intentions).
+#The exception is the addition action, of which the predicate is added to the facts during inference.
+#Add your program rules below:

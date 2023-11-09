@@ -1,0 +1,8 @@
+#Every cycle at the sense step, the world generates percepts and returns to the agent a knowlegde base called the percept base.
+#After this, inference is done on the union of the percept rules (this file), the agent's beliefs and the percept base.
+#Every cycle your percept base changes, reflecting the current state the agent is in. 
+#If you want to remember things from previous percepts, you have to build rules to do so.
+#This is the purpose of the percept rules.
+#Such rules typically add or delete beliefs, this is done with + and - operators.
+#Add your percept rules below:
+
