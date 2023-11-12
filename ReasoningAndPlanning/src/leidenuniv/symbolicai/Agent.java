@@ -197,18 +197,84 @@ public abstract class Agent {
 	//<substitution> is the one we are currently building recursively.
 	//<conditions> is the remaining list of conditions for one rule you still need to find a subst for (this list shrinks the further you get in the recursion).
 	//<facts> is your database of facts, the list of predicates you need to match against (find substitutions so that a predicate form the conditions unifies with a fact)
+    
+	//task 6
+	//base step:
+	if (conditions.isEmpty()) {
+		allSubstitutions.add(substitution);
+		return true;
+	}
+	
+	HashMap<String,String> temp_sub=new HashMap <String, String>();
+	Boolean found = false; //flag for if a substitution is found
+	
+	//Try to unify the first term to statement
+	for (String fact_key:facts.keySet()) {
+		temp_sub = unifiesWith(conditions.elementAt(0), facts.get(fact_key));
+		if (temp_sub == null) {
+			continue;
+		}
+		else { //if a unification exists
+			substitution.putAll(temp_sub);
+			Vector<Predicate> conditions_copy = new Vector<Predicate>(conditions);
+			Predicate conditions_check = conditions_copy.remove(0); //Remove condition from copy of condition for each iteration
+			Predicate temp = substitute(conditions_copy.remove(0), substitution); //this remembers the variables of the checked condition in each iteration
 			
-	public abstract HashMap<String, String> unifiesWith(Predicate p, Predicate f);
+			// Execute a recursive call with reduced set of conditions:
+			if (findAllSubstitions(allSubstitutions, substitution, conditions_copy, facts)) {
+				if (temp.not) { //check if the condition is != (X,Y)
+					if (temp.not()) { //check if that's still the case after the substitution
+						conditions_copy.add(0, conditions_check); //abort the removing of the element
+					}
+				}
+				if (temp.eql) { //check if the condition is = (X,Y)
+					if (temp.eql()) {
+						conditions_copy.add(0, conditions_check);
+					}
+				}
+				else {
+					found = true;
+				}
+			}
+			substitution.clear(); // Empty hashmap for next search
+		}
+	}		
+	return found;
+}
+	public abstract HashMap<String, String> unifiesWith(Predicate p, Predicate f); {//task 5
 	//Returns the substitution for which p predicate unifies with f, or null when there us no such substitution
 	//You may assume that Predicate f is fully bound (i.e., it has no variables anymore)
 	//The result can be an empty substitution object, if no subst is needed to unify p with f (e.g., if p and f contain the same constants or do not have any terms)
 	//Please note that because f is bound and p potentially contains the variables, unifiesWith is NOT symmetrical
 	//For example: unifiesWith(new Predicate("human(X)"),new Predicate("human(joost))") returns X=joost, while unifiesWith(new Predicate("human(joost)"),new Predicate("human(X)")) returns null 
+	if (p.getTerms().size()!=f.getTerms().size() || p.getName()!=f.getName()) { 
+		return null;
+	}
+	HashMap<String, String> substitutions = new HashMap<String,String>();
 	
-	public abstract Predicate substitute(Predicate old, HashMap<String, String> s);
+	for (int i=0; i<p.getTerms().size(); i++) { //loop all terms in predicate p
+		if (p.getTerm(i).var) { //if the term is a variable...
+			substitutions.put(p.getTerm(i).toString(), f.getTerm(i).toString()); 
+		}
+	}
+	//predicate p has to be equal to predicate f before the substitution is really done
+	if (substitute(p, substitutions).toString().equals(f.toString())) { 
+		return substitutions;
+	} 
+	else {
+		return null;
+	}
+
+
+	public abstract Predicate substitute(Predicate old, HashMap<String, String> s);{ //task 4, no explanation needed 
 	//Returns a copy of <old> in which all variable terms in predicate <old> are substituted for values 
 	//according to the substitution <s> (only if a key is present in s matching the variable name in of course)
 	//Use Term.substitute(s)
+	for (Term t: old.getTerms()) {
+	    t.substitute(s);
+	}
+	return old;
+    }
 	
 	public abstract Plan idSearch(int maxDepth, KB kb, Predicate goal);
 	//Predicate <goal> is the goal predicate to find a plan for.

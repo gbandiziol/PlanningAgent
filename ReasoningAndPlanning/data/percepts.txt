@@ -5,4 +5,8 @@
 #This is the purpose of the percept rules.
 #Such rules typically add or delete beliefs, this is done with + and - operators.
 #Add your percept rules below:
+at(X)>+at(X)
+at(X)&passage(Y)>+link(X,Y)
+at(X)&key(I)>+keyAt(I,X)
+at(X)&locked(K)>+lockedAt(K,X)
 

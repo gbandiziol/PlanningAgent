@@ -56,7 +56,7 @@ public class Location {
 			return false;
 	}
 	public boolean openLock(Set<String> keys) {
-		//checks if we are a locked location, and if the key fits the lock, then remove the lock on this location, return true.
+		//checks if we are at a locked location, and if the key fits the lock, then remove the lock on this location, return true.
 		if (isLocked() && keys.contains(type.toLowerCase())){
 			type=" ";
 			return true;
