@@ -181,12 +181,43 @@ public abstract class Agent {
 			}
 		}
 	}
-	public abstract KB forwardChain(KB kb);
+	public abstract KB forwardChain(KB kb); //task 7
 	//This method should perform forward chaining on the kb given as argument, until no new facts can be added to the KB.
 	//You start with an empty collection of facts. When ready, it returns a new KB of ground facts (bounded).
 	//The resulting KB includes all deduced predicates, including operators (adding/removing intentions, facts and goals).
 	//These are then processed by processFacts() (which is already implemented for you)
 	//HINT: You should assume that forwardChain only allows *bound* predicates (i.e. without free variables) to be added to the facts list for now.
+	HashMap<String,Predicate>facts=new HashMap<String, Predicate>(); 
+	Collection<Predicate>factsvector=new Vector<Predicate>() ;
+	Collection<HashMap<String, String>> allSubstitutions = new Vector<HashMap<String, String>>();
+	
+	for (Sentence s : kb.rules()) { 
+		//add all existing facts if there are facts already, so not empty
+		if (s.conditions.isEmpty()) {
+			for (Predicate t:s.conclusions) {//loop over all predicates to add
+				facts.put(t.toString(), t);
+				factsvector.add(t);}			
+		}
+		//if there exist a substitution list it means there are legit facts you can add to the KB 
+		//
+		if (findAllSubstitions(allSubstitutions, new HashMap<String, String>(), s.conditions, facts)) {
+			for (HashMap<String,String> substitutions: allSubstitutions) {
+				for (Predicate t : s.conclusions) {
+					if (!t.add) { //if the predicate is not added
+						Predicate bound = substitute(t, substitutions); //adding to the kb for legit substiution							
+						factsvector.add(bound);
+						facts.put(bound.toString(), bound); //tracks and stores added facts
+					}
+				}
+			}
+		}
+	}
+	//the factsvector represents the updatedKB
+	KB updatedKB = new KB(factsvector); 
+	return updatedKB;	
+
+
+
 	
 	public abstract boolean findAllSubstitions(Collection<HashMap<String,String>> allSubstitutions, HashMap<String,String> substitution, Vector<Predicate> conditions, HashMap<String,Predicate> facts);
 	//Recursive method to find *all* valid substitutions for a vector of conditions for *one* rule, given a collection of facts
