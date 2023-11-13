@@ -181,7 +181,7 @@ public abstract class Agent {
 			}
 		}
 	}
-	public abstract KB forwardChain(KB kb); //task 7
+	public abstract KB forwardChain(KB kb); {//task 7
 	//This method should perform forward chaining on the kb given as argument, until no new facts can be added to the KB.
 	//You start with an empty collection of facts. When ready, it returns a new KB of ground facts (bounded).
 	//The resulting KB includes all deduced predicates, including operators (adding/removing intentions, facts and goals).
@@ -215,11 +215,11 @@ public abstract class Agent {
 	//the factsvector represents the updatedKB
 	KB updatedKB = new KB(factsvector); 
 	return updatedKB;	
-
+    }
 
 
 	
-	public abstract boolean findAllSubstitions(Collection<HashMap<String,String>> allSubstitutions, HashMap<String,String> substitution, Vector<Predicate> conditions, HashMap<String,Predicate> facts);
+	public abstract boolean findAllSubstitions(Collection<HashMap<String,String>> allSubstitutions, HashMap<String,String> substitution, Vector<Predicate> conditions, HashMap<String,Predicate> facts);{
 	//Recursive method to find *all* valid substitutions for a vector of conditions for *one* rule, given a collection of facts
 	//The recursion is over Vector<Predicate> conditions (so this vector gets shorter and shorter, the further you are with finding a substitution)
 	//It returns true if at least one substitution is found (can be the empty substitution, if nothing needs to be substituted to unify the conditions with the facts)
@@ -271,7 +271,7 @@ public abstract class Agent {
 		}
 	}		
 	return found;
-}
+    }
 	public abstract HashMap<String, String> unifiesWith(Predicate p, Predicate f); {//task 5
 	//Returns the substitution for which p predicate unifies with f, or null when there us no such substitution
 	//You may assume that Predicate f is fully bound (i.e., it has no variables anymore)
@@ -294,8 +294,8 @@ public abstract class Agent {
 	} 
 	else {
 		return null;
-	}
-
+	} 
+    } 
 
 	public abstract Predicate substitute(Predicate old, HashMap<String, String> s);{ //task 4, no explanation needed 
 	//Returns a copy of <old> in which all variable terms in predicate <old> are substituted for values 
