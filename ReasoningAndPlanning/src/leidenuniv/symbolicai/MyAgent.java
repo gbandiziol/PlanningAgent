@@ -105,7 +105,6 @@ public class MyAgent extends Agent {
 		}		
 		return found;
 	}
-	
 
 	@Override
 	public HashMap<String, String> unifiesWith(Predicate p, Predicate f) {

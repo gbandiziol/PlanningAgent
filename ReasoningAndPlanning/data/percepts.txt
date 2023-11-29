@@ -9,4 +9,3 @@ at(X)>+at(X)
 at(X)&passage(Y)>+link(X,Y)
 at(X)&key(I)>+keyAt(I,X)
 at(X)&locked(K)>+lockedAt(K,X)
-
