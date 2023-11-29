@@ -12,10 +12,10 @@ public abstract class Agent {
 	//these are dynamic facts, believes are facts, intentions are actions that
 	//are possible, desires are goal predicates
 	KB believes, desires, intentions;
-	boolean HUMAN_DECISION=false; //change to false: decide step makes the decision rather than you
+	boolean HUMAN_DECISION=true; //change to false: decide step makes the decision rather than you
 								  //change to true: you (human) make the decision
 	boolean PLAN=true;
-	boolean DEBUG=false;
+	boolean DEBUG=true;
 	boolean VERBOSE=false;
 	
 	public Agent() {

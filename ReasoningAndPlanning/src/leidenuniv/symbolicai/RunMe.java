@@ -13,7 +13,7 @@ public class RunMe {
 		Maze w=new Maze(new File("data/prison.txt"));
 		//Create an agent
 		Agent a=new MyAgent();
-		a.HUMAN_DECISION=false;
+		a.HUMAN_DECISION=true;
 		a.VERBOSE=true;
 		//Load the rules and static knowledge for the different steps in the agent cycle
 		a.loadKnowledgeBase("percepts", new File("data/percepts.txt"));
@@ -21,7 +21,7 @@ public class RunMe {
 		a.loadKnowledgeBase("actions", new File("data/actions.txt"));		
 		
 		//If you need to test on a simpler file, you may use this one and comment out all the other KBs:
-		//a.loadKnowledgeBase("program", new File("data/family.txt"));
+		//a.loadKnowledgeBase("program", new File("data/family1.txt"));
 		
 		
 		Scanner io= new Scanner(System.in);
