@@ -28,7 +28,7 @@ public class MyAgent extends Agent {
 		
 		for (Sentence s : kb.rules()) { 
 			//if the conditions vector is not empty you can add all the already known facts to the factsvector
-			if (s.conditions.isEmpty()) {
+			if (!s.conditions.isEmpty()) {
 				for (Predicate t : s.conclusions) {
 					facts.put(t.toString(), t);
 					factsvector.add(t);
