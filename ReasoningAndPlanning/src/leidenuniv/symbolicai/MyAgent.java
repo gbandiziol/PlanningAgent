@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Vector;
 
+import leidenuniv.symbolicai.environment.Maze;
 import leidenuniv.symbolicai.logic.KB;
 import leidenuniv.symbolicai.logic.Predicate;
 import leidenuniv.symbolicai.logic.Sentence;
@@ -114,7 +115,6 @@ public class MyAgent extends Agent {
 		//Please note because f is bound and p potentially contains the variables, unifiesWith is NOT symmetrical
 		//So: unifiesWith("human(X)","human(joost)") returns X=joost, while unifiesWith("human(joost)","human(X)") returns null 
 		//If no subst is found it returns null
-		
 		//If the predicate doesn't have the same amount of terms or it isn't the same predicate
 		//then there's no unification possible
 		if (p.getTerms().size() != f.getTerms().size() || p.getName() != f.getName()) { 
@@ -154,7 +154,14 @@ public class MyAgent extends Agent {
 		//Ends at maxDepth
 		//Predicate goal is the goal predicate to find a plan for.
 		//Return null if no plan is found.
-		return null;
+
+		for (int depth = 1; depth <= maxDepth; depth++) { //looping over over all depths to apply the dfs depth level per depth level
+			Plan plan = depthFirst(depth, 0, kb, goal, new Plan());
+			if (null != plan) { //returns plan if dfs finds a plan for the goal
+				return plan;
+			}
+		}
+		return null; //returns null if no plan is found
 	}
 
 	@Override
@@ -165,6 +172,32 @@ public class MyAgent extends Agent {
 		//Returns (bubbles back through recursion) the plan when the state entails the goal predicate
 		//Returns null if capped or if there are no (more) actions to perform in one node (state)
 		//HINT: make use of think() and act() using the local state for the node in the search you are in.
-		return null;
+		
+		if (depth > maxDepth) {
+			return null;  //break condition
+		}
+	
+		if (state.contains(goal)) {
+			return partialPlan;  //base case, return solution
+		}
+	
+		for (Sentence action: state.rules()) {//copying state to not overwrite
+			
+			KB newState = state;//.copy() does not work, a copy should be created here
+			think(newState, desires, intentions);  //evaluate with think()
+			//act("prison.txt", action, believes, desires);  // Update the new state by acting act(Maze w, Predicate action, KB b, KB d)
+	
+			//recursion on new state with plan
+			Plan newPPlan = partialPlan; //.copy() does not work, a copy should be created here
+			newPPlan.add(action);
+			Plan result = depthFirst(maxDepth, depth + 1, newState, goal, newPPlan);
+	
+			if (result != null) {
+				return result;  //goal found in recursive call
+			}
+		}
+	
+		return null;  //return null if there is no applicable plan
 	}
+		
 }
